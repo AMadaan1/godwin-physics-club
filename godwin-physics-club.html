@@ -181,6 +181,26 @@
   }
   .optional-box b{color:var(--teal);}
 
+  /* ---------- COMPETE (serious track) ---------- */
+  .compete{background:var(--ink);color:#fff;}
+  .compete-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:start;}
+  .compete .eyebrow{margin-bottom:16px;}
+  .compete h2{color:#fff;font-size:32px;}
+  .compete p{color:#C7CDE0;font-size:16px;margin-top:16px;max-width:520px;line-height:1.6;}
+  .compete-note{font-style:italic;color:#8FA3C9;font-size:14px;}
+  .date-card{
+    background:#fff;
+    color:var(--ink);
+    border-radius:16px;
+    padding:30px 30px 24px;
+    box-shadow:0 14px 34px rgba(0,0,0,0.28);
+  }
+  .date-card-label{font-size:13px;letter-spacing:0.06em;text-transform:uppercase;color:var(--slate-light);font-weight:700;margin-bottom:6px;}
+  .date-row{display:flex;justify-content:space-between;align-items:baseline;padding:11px 0;gap:16px;}
+  .date-row + .date-row{border-top:1px solid #E5E8F0;}
+  .date-label{font-size:14px;color:var(--slate);}
+  .date-value{font-size:14.5px;font-weight:700;color:var(--teal);white-space:nowrap;}
+
   /* ---------- JOIN ---------- */
   .join{
     background:radial-gradient(circle at 20% 20%, var(--ink-soft) 0%, var(--ink) 65%);
@@ -240,7 +260,7 @@
   }
 
   @media (max-width: 760px){
-    .why-grid, .card-grid, .tl-row{grid-template-columns:1fr;}
+    .why-grid, .card-grid, .tl-row, .compete-grid{grid-template-columns:1fr;}
     section{padding:64px 0;}
   }
 
@@ -276,8 +296,8 @@
     <div class="hero-scrim" aria-hidden="true"></div>
     <div class="wrap">
       <span class="eyebrow">New at Godwin · Charter forming now</span>
-      <h1>The physics club.</h1>
-      <p class="sub">No club just for people who like physics — yet. We're starting one. No experience required, no pressure. Just show up, have fun.</p>
+      <h1>A physics club built for the Olympiad crowd — and everyone else too.</h1>
+      <p class="sub">No Physics C at Godwin, so we're building real F=ma and USAPhO training ourselves. Come for the competition, or just come curious — both work here.</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="#join">Join as a charter member</a>
         <a class="btn btn-ghost" href="#what">See what we actually do</a>
@@ -289,12 +309,12 @@
     <div class="wrap why-grid">
       <div>
         <h2>Why this exists</h2>
-        <p>Physics opportunities could be expanded and there isn't currently an active space just for people who <em>like physics</em> — so we're building one. It's for anyone curious. Whether that means grinding F=ma and USAPhO problems or just dropping in. Same club, no pressure either way.</p>
+        <p>Physics C isn't part of Godwin's current course lineup, and there isn't currently an active space just for people who like physics — so we're building one. It's for anyone curious about how things work, whether that means grinding F=ma and USAPhO problems or just dropping in because you're bored on a Tuesday. Same club, no pressure either way.</p>
       </div>
       <div class="stat-card reveal">
         <div class="stat-row">
           <div class="stat-num">0</div>
-          <div class="stat-label">Active Physics Clubs, until now</div>
+          <div class="stat-label">physics-only clubs at Godwin, until now</div>
         </div>
         <div class="stat-row">
           <div class="stat-num amber">1</div>
@@ -307,12 +327,12 @@
   <section class="what" id="what">
     <div class="wrap">
       <h2>What we'll actually do</h2>
-      <p class="kicker">Three simple things. Come to whatever interests you.</p>
+      <p class="kicker">Three simple things. Come to one, come to all.</p>
       <div class="card-grid">
         <div class="card reveal">
           <div class="icon">🏆</div>
           <h3>Physics Bowls</h3>
-          <p>Team trivia built on F=ma-style problems — the actual U.S. Physics Olympiad qualifier. Fun scoring, real problem-solving, all algebra based.</p>
+          <p>Team trivia built on F=ma-style problems — the actual U.S. Physics Olympiad qualifier. Fun scoring, real problem-solving, no calculus needed.</p>
         </div>
         <div class="card reveal">
           <div class="icon">🧪</div>
@@ -324,6 +344,24 @@
           <h3>Guest Talks</h3>
           <p>Real people doing real physics, dropping by to talk shop and take questions.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compete">
+    <div class="wrap compete-grid">
+      <div>
+        <span class="eyebrow">The serious track</span>
+        <h2>If you want to actually compete, this is real.</h2>
+        <p>Bowls and labs are the on-ramp. If competing is what you're actually here for, we're building real prep alongside everything else — not a footnote.</p>
+        <p>F=ma is algebra-based and open to anyone right now — no calculus required. It's also the qualifying exam for USAPhO, so once your math catches up, that's the natural next step.</p>
+        <p class="compete-note">Based on input from our charter members, we'll shape this to actually serve the people who show up for it — not a one-size-fits-all program handed down from the top.</p>
+      </div>
+      <div class="date-card reveal">
+        <div class="date-card-label">Key dates</div>
+        <div class="date-row"><div class="date-label">F=ma registration opens</div><div class="date-value">Mid-October</div></div>
+        <div class="date-row"><div class="date-label">F=ma registration deadline</div><div class="date-value">Late January</div></div>
+        <div class="date-row"><div class="date-label">F=ma exam</div><div class="date-value">February</div></div>
       </div>
     </div>
   </section>
@@ -365,7 +403,7 @@
         </div>
       </div>
       <div class="optional-box">
-        <b>Here's the cool part:</b> our trivia format at Bowls is literally F=ma, the qualifying exam for the U.S. Physics Olympiad. Play for fun and you're already training. Want to sit the real exam in February? We'll register the whole club — no calculus required.
+        <b>Here's the cool part:</b> our trivia format at Bowls is literally F=ma, the qualifying exam for the U.S. Physics Olympiad. Play for fun and you're already training. Want to sit the real exam in February? We'll help you get registered — no calculus required.
       </div>
     </div>
   </section>
@@ -388,7 +426,7 @@
             <label for="su-grade">Grade</label>
             <select id="su-grade">
               <option>9th</option>
-              <option>10th</option>
+              <option selected>10th</option>
               <option>11th</option>
               <option>12th</option>
             </select>
@@ -399,7 +437,7 @@
           </div>
           <div class="field-row checkbox-row">
             <input type="checkbox" id="su-fma">
-            <label for="su-fma">I'm curious about the Olympiad track too</label>
+            <label for="su-fma">I'm curious about the F=ma track too</label>
           </div>
           <div class="field-row">
             <label for="su-note">Anything pulling you in? (optional)</label>
@@ -409,8 +447,6 @@
         </form>
         <div class="signup-note">This opens Gmail in a new tab with everything filled in — just hit send. Nothing is submitted until you do.</div>
       </div>
-
-      <div class="fine">Zero commitment to show up every time. Just come when you can.</div>
     </div>
   </section>
 
@@ -427,7 +463,7 @@
 
       const subject = encodeURIComponent(`Physics Club Sign-Up: ${name}`);
       const body = encodeURIComponent(
-        `Name: ${name}\nGrade: ${grade}\nEmail: ${email}\nInterested in Olympiad track: ${fma}\nWhat pulled you in: ${note || "—"}`
+        `Name: ${name}\nGrade: ${grade}\nEmail: ${email}\nInterested in F=ma track: ${fma}\nWhat pulled them in: ${note || "—"}`
       );
 
       const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(PHYSICS_CLUB_EMAIL)}&su=${subject}&body=${body}`;
@@ -712,7 +748,7 @@
   </script>
 
   <footer>
-    Godwin Physics Club · Questions? Contact Arjun anytime.
+    Godwin Physics Club · Questions? Find Arjun anytime.
   </footer>
 
 </body>
