@@ -276,8 +276,8 @@
     <div class="hero-scrim" aria-hidden="true"></div>
     <div class="wrap">
       <span class="eyebrow">New at Godwin · Charter forming now</span>
-      <h1>A physics club that isn't a competition.</h1>
-      <p class="sub">No Physics C here, and no club just for people who like physics — yet. We're starting one. No experience required, no pressure to show up every week.</p>
+      <h1>The physics club.</h1>
+      <p class="sub">No club just for people who like physics — yet. We're starting one. No experience required, no pressure. Just show up, have fun.</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="#join">Join as a charter member</a>
         <a class="btn btn-ghost" href="#what">See what we actually do</a>
@@ -289,12 +289,12 @@
     <div class="wrap why-grid">
       <div>
         <h2>Why this exists</h2>
-        <p>Physics C isn't part of Godwin's current course lineup, and there isn't currently an active space just for people who like physics — so we're building one. It's for anyone curious about how things work, whether that means grinding F=ma and USAPhO problems or just dropping in because you're bored on a Tuesday. Same club, no pressure either way.</p>
+        <p>Physics opportunities could be expanded and there isn't currently an active space just for people who <em>like physics</em> — so we're building one. It's for anyone curious. Whether that means grinding F=ma and USAPhO problems or just dropping in. Same club, no pressure either way.</p>
       </div>
       <div class="stat-card reveal">
         <div class="stat-row">
           <div class="stat-num">0</div>
-          <div class="stat-label">physics-only clubs at Godwin, until now</div>
+          <div class="stat-label">Active Physics Clubs, until now</div>
         </div>
         <div class="stat-row">
           <div class="stat-num amber">1</div>
@@ -307,12 +307,12 @@
   <section class="what" id="what">
     <div class="wrap">
       <h2>What we'll actually do</h2>
-      <p class="kicker">Three simple things. Come to one, come to all — there's no attendance sheet.</p>
+      <p class="kicker">Three simple things. Come to whatever interests you.</p>
       <div class="card-grid">
         <div class="card reveal">
           <div class="icon">🏆</div>
           <h3>Physics Bowls</h3>
-          <p>Team trivia built on F=ma-style problems — the actual U.S. Physics Olympiad qualifier. Fun scoring, real problem-solving, no calculus needed.</p>
+          <p>Team trivia built on F=ma-style problems — the actual U.S. Physics Olympiad qualifier. Fun scoring, real problem-solving, all algebra based.</p>
         </div>
         <div class="card reveal">
           <div class="icon">🧪</div>
@@ -388,7 +388,7 @@
             <label for="su-grade">Grade</label>
             <select id="su-grade">
               <option>9th</option>
-              <option selected>10th</option>
+              <option>10th</option>
               <option>11th</option>
               <option>12th</option>
             </select>
@@ -427,7 +427,7 @@
 
       const subject = encodeURIComponent(`Physics Club Sign-Up: ${name}`);
       const body = encodeURIComponent(
-        `Name: ${name}\nGrade: ${grade}\nEmail: ${email}\nInterested in F=ma track: ${fma}\nWhat pulled them in: ${note || "—"}`
+        `Name: ${name}\nGrade: ${grade}\nEmail: ${email}\nInterested in F=ma track: ${fma}\nWhat pulled you in: ${note || "—"}`
       );
 
       const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(PHYSICS_CLUB_EMAIL)}&su=${subject}&body=${body}`;
