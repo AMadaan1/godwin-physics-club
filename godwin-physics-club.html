@@ -399,7 +399,7 @@
           </div>
           <div class="field-row checkbox-row">
             <input type="checkbox" id="su-fma">
-            <label for="su-fma">I'm curious about the F=ma track too</label>
+            <label for="su-fma">I'm curious about the Olympiad track too</label>
           </div>
           <div class="field-row">
             <label for="su-note">Anything pulling you in? (optional)</label>
@@ -427,7 +427,7 @@
 
       const subject = encodeURIComponent(`Physics Club Sign-Up: ${name}`);
       const body = encodeURIComponent(
-        `Name: ${name}\nGrade: ${grade}\nEmail: ${email}\nInterested in F=ma track: ${fma}\nWhat pulled you in: ${note || "—"}`
+        `Name: ${name}\nGrade: ${grade}\nEmail: ${email}\nInterested in Olympiad track: ${fma}\nWhat pulled you in: ${note || "—"}`
       );
 
       const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(PHYSICS_CLUB_EMAIL)}&su=${subject}&body=${body}`;
