@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Godwin Physics Club</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  :root{
+    --ink:#14172E;
+    --ink-soft:#1E2247;
+    --teal:#1C7293;
+    --teal-soft:#2C86A8;
+    --amber:#F4A261;
+    --paper:#EDEFF5;
+    --paper-card:#FFFFFF;
+    --slate:#4B5468;
+    --slate-light:#7A8299;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.5;
+  }
+  h1,h2,h3{
+    font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+    margin:0;
+    font-weight:600;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+  section{padding:88px 0;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:radial-gradient(circle at 78% 18%, var(--ink-soft) 0%, var(--ink) 62%);
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+    padding:120px 0 100px;
+  }
+  .hero-visual{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    will-change:transform;
+  }
+  #orbit-canvas{
+    display:block;
+    width:100%;
+    height:100%;
+  }
+  .hero-scrim{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:linear-gradient(100deg,
+      rgba(20,23,46,0.94) 0%,
+      rgba(20,23,46,0.72) 34%,
+      rgba(20,23,46,0.22) 60%,
+      rgba(20,23,46,0) 76%);
+  }
+  .hero .wrap{position:relative;z-index:1;}
+  @media (max-width: 700px){
+    .hero-visual{opacity:0.55;}
+    .hero-scrim{background:rgba(20,23,46,0.82);}
+  }
+
+  .eyebrow{
+    display:inline-block;
+    font-size:13px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--amber);
+    font-weight:600;
+    margin-bottom:22px;
+  }
+  .hero h1{
+    font-size:clamp(38px,5.5vw,58px);
+    line-height:1.08;
+    max-width:680px;
+    color:#fff;
+  }
+  .hero p.sub{
+    max-width:520px;
+    font-size:18px;
+    color:#C7CDE0;
+    margin-top:22px;
+  }
+  .cta-row{margin-top:38px;display:flex;gap:16px;flex-wrap:wrap;}
+  .btn{
+    display:inline-block;
+    padding:14px 28px;
+    border-radius:30px;
+    font-size:15px;
+    font-weight:600;
+    text-decoration:none;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn:focus-visible{outline:3px solid var(--amber); outline-offset:3px;}
+  .btn-primary{background:var(--amber);color:var(--ink);}
+  .btn-primary:hover{box-shadow:0 8px 20px rgba(244,162,97,0.35);}
+  .btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.35);}
+  .btn-ghost:hover{border-color:#fff;}
+
+  /* ---------- WHY ---------- */
+  .why{padding-top:96px;padding-bottom:80px;}
+  .why-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:center;}
+  .why h2{font-size:32px;color:var(--ink);}
+  .why p{color:var(--slate);font-size:16.5px;margin-top:18px;max-width:480px;}
+  .stat-card{
+    background:var(--paper-card);
+    border-radius:18px;
+    padding:36px;
+    box-shadow:0 12px 30px rgba(20,23,46,0.06);
+  }
+  .stat-row{display:flex;align-items:baseline;gap:18px;padding:14px 0;}
+  .stat-row + .stat-row{border-top:1px solid #E5E8F0;}
+  .stat-num{font-family:Georgia,serif;font-size:52px;font-weight:700;color:var(--teal);min-width:70px;}
+  .stat-num.amber{color:var(--amber);}
+  .stat-label{color:var(--slate);font-size:14.5px;}
+
+  /* ---------- WHAT WE DO ---------- */
+  .what{background:var(--ink);color:#fff;}
+  .what h2{color:#fff;font-size:32px;}
+  .what .kicker{color:#8FA3C9;font-size:15.5px;margin-top:12px;max-width:460px;}
+  .card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:48px;}
+  .card{
+    background:var(--ink-soft);
+    border-radius:16px;
+    padding:30px 26px;
+  }
+  .card .icon{
+    width:46px;height:46px;border-radius:50%;
+    background:var(--teal);
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;
+    margin-bottom:20px;
+  }
+  .card h3{color:#fff;font-size:19px;}
+  .card p{color:#AEB6CC;font-size:14.5px;margin-top:10px;}
+
+  /* ---------- WHO ---------- */
+  .who{padding:96px 0;}
+  .who h2{font-size:32px;color:var(--ink);text-align:center;}
+  .who-list{max-width:640px;margin:44px auto 0;display:flex;flex-direction:column;gap:20px;}
+  .who-item{display:flex;gap:16px;align-items:flex-start;font-size:17px;color:var(--ink);}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--amber);margin-top:8px;flex-shrink:0;}
+
+  /* ---------- TIMELINE ---------- */
+  .timeline{background:var(--paper-card);}
+  .timeline h2{font-size:32px;color:var(--ink);}
+  .timeline .kicker{color:var(--slate-light);margin-top:10px;font-size:15.5px;}
+  .tl-row{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:48px;}
+  .tl-item{position:relative;padding-top:44px;}
+  .tl-num{
+    position:absolute;top:0;left:0;
+    width:34px;height:34px;border-radius:50%;
+    background:var(--teal);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:Georgia,serif;font-weight:700;font-size:15px;
+  }
+  .tl-item h3{font-size:18px;color:var(--ink);margin-top:6px;}
+  .tl-when{color:var(--amber);font-weight:700;font-size:13px;margin-top:4px;}
+  .tl-item p{color:var(--slate);font-size:14.5px;margin-top:8px;}
+
+  .optional-box{
+    margin-top:52px;
+    background:#F0F9FB;
+    border-radius:16px;
+    padding:26px 30px;
+    font-size:15.5px;
+    color:var(--ink);
+  }
+  .optional-box b{color:var(--teal);}
+
+  /* ---------- JOIN ---------- */
+  .join{
+    background:radial-gradient(circle at 20% 20%, var(--ink-soft) 0%, var(--ink) 65%);
+    color:#fff;
+    text-align:center;
+  }
+  .join h2{font-size:34px;color:#fff;}
+  .join p{max-width:520px;margin:18px auto 0;color:#C7CDE0;font-size:16.5px;}
+  .join .btn-row{margin-top:34px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap;}
+  .fine{margin-top:22px;font-size:13.5px;color:#8892AC;}
+
+  /* ---------- SIGNUP FORM ---------- */
+  .signup-card{
+    background:#fff;
+    color:var(--ink);
+    border-radius:18px;
+    padding:34px 34px 28px;
+    max-width:440px;
+    margin:38px auto 0;
+    text-align:left;
+    box-shadow:0 20px 50px rgba(0,0,0,0.28);
+  }
+  .field-row{margin-bottom:16px;display:flex;flex-direction:column;gap:6px;}
+  .field-row label{font-size:13.5px;font-weight:600;color:var(--slate);}
+  .field-row input[type="text"],
+  .field-row input[type="email"],
+  .field-row select,
+  .field-row textarea{
+    font-family:inherit;
+    font-size:15px;
+    padding:11px 13px;
+    border:1.5px solid #DCE1EC;
+    border-radius:10px;
+    background:#F8F9FC;
+    color:var(--ink);
+  }
+  .field-row textarea{resize:vertical;min-height:56px;}
+  .field-row input:focus,
+  .field-row select:focus,
+  .field-row textarea:focus{
+    outline:none;
+    border-color:var(--teal);
+    background:#fff;
+  }
+  .checkbox-row{flex-direction:row;align-items:center;gap:10px;}
+  .checkbox-row label{font-weight:500;color:var(--ink);}
+  .checkbox-row input{width:17px;height:17px;accent-color:var(--teal);}
+  .signup-card .btn{margin-top:6px;border:none;cursor:pointer;font-family:inherit;}
+  .signup-note{margin-top:14px;font-size:13px;color:var(--slate-light);text-align:center;}
+
+  footer{
+    background:var(--ink);
+    color:#7A8299;
+    text-align:center;
+    padding:28px 0;
+    font-size:13.5px;
+  }
+
+  @media (max-width: 760px){
+    .why-grid, .card-grid, .tl-row{grid-template-columns:1fr;}
+    section{padding:64px 0;}
+  }
+
+  /* ---------- SCROLL REVEAL ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(20px);
+    transition:opacity .65s ease, transform .65s ease;
+  }
+  .reveal.in-view{opacity:1;transform:translateY(0);}
+  .card-grid .reveal:nth-child(1){transition-delay:.05s;}
+  .card-grid .reveal:nth-child(2){transition-delay:.15s;}
+  .card-grid .reveal:nth-child(3){transition-delay:.25s;}
+  .tl-row .reveal:nth-child(1){transition-delay:.05s;}
+  .tl-row .reveal:nth-child(2){transition-delay:.15s;}
+  .tl-row .reveal:nth-child(3){transition-delay:.25s;}
+  .who-list .reveal:nth-child(1){transition-delay:.05s;}
+  .who-list .reveal:nth-child(2){transition-delay:.12s;}
+  .who-list .reveal:nth-child(3){transition-delay:.19s;}
+  .who-list .reveal:nth-child(4){transition-delay:.26s;}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{transition:none; opacity:1; transform:none;}
+  }
+</style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-visual" id="hero-visual" aria-hidden="true">
+      <canvas id="orbit-canvas"></canvas>
+    </div>
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="eyebrow">New at Godwin · Charter forming now</span>
+      <h1>A physics club that isn't a competition.</h1>
+      <p class="sub">No Physics C here, and no club just for people who like physics — yet. We're starting one. No experience required, no pressure to show up every week.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#join">Join as a charter member</a>
+        <a class="btn btn-ghost" href="#what">See what we actually do</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="why">
+    <div class="wrap why-grid">
+      <div>
+        <h2>Why this exists</h2>
+        <p>Physics C isn't part of Godwin's current course lineup, and there isn't currently an active space just for people who like physics — so we're building one. It's for anyone curious about how things work, whether that means grinding F=ma and USAPhO problems or just dropping in because you're bored on a Tuesday. Same club, no pressure either way.</p>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-row">
+          <div class="stat-num">0</div>
+          <div class="stat-label">physics-only clubs at Godwin, until now</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-num amber">1</div>
+          <div class="stat-label">club starting this fall — hopefully with you in it</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="what" id="what">
+    <div class="wrap">
+      <h2>What we'll actually do</h2>
+      <p class="kicker">Three simple things. Come to one, come to all — there's no attendance sheet.</p>
+      <div class="card-grid">
+        <div class="card reveal">
+          <div class="icon">🏆</div>
+          <h3>Physics Bowls</h3>
+          <p>Team trivia built on F=ma-style problems — the actual U.S. Physics Olympiad qualifier. Fun scoring, real problem-solving, no calculus needed.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🧪</div>
+          <h3>Small Labs</h3>
+          <p>Hands-on experiments with whatever we've got — measuring, guessing wrong, trying again.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🎤</div>
+          <h3>Guest Talks</h3>
+          <p>Real people doing real physics, dropping by to talk shop and take questions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="who">
+    <div class="wrap">
+      <h2>Who this is for</h2>
+      <div class="who-list">
+        <div class="who-item reveal"><span class="dot"></span> You don't need to have taken AP Physics.</div>
+        <div class="who-item reveal"><span class="dot"></span> You don't need to be "a STEM person."</div>
+        <div class="who-item reveal"><span class="dot"></span> Any grade, any background, any level of interest.</div>
+        <div class="who-item reveal"><span class="dot"></span> Come for the snacks, come for the labs, come for whatever reason you want.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="timeline">
+    <div class="wrap">
+      <h2>This semester, realistically</h2>
+      <p class="kicker">Small, real, and on the calendar — not a wishlist.</p>
+      <div class="tl-row">
+        <div class="tl-item reveal">
+          <div class="tl-num">1</div>
+          <h3>Kickoff Meeting</h3>
+          <div class="tl-when">[Sept]</div>
+          <p>Meet everyone, pick a regular time, zero homework.</p>
+        </div>
+        <div class="tl-item reveal">
+          <div class="tl-num">2</div>
+          <h3>First Small Lab</h3>
+          <div class="tl-when">[Oct]</div>
+          <p>Simple, hands-on, low-stakes experiment.</p>
+        </div>
+        <div class="tl-item reveal">
+          <div class="tl-num">3</div>
+          <h3>First Physics Bowl</h3>
+          <div class="tl-when">[Nov]</div>
+          <p>Team trivia, F=ma-style problems, pick your squad.</p>
+        </div>
+      </div>
+      <div class="optional-box">
+        <b>Here's the cool part:</b> our trivia format at Bowls is literally F=ma, the qualifying exam for the U.S. Physics Olympiad. Play for fun and you're already training. Want to sit the real exam in February? We'll register the whole club — no calculus required.
+      </div>
+    </div>
+  </section>
+
+  <section class="join" id="join">
+    <div class="wrap">
+      <h2>Become a charter member</h2>
+      <p>We need 10 people to officially charter the club — and charter members help decide how it's actually run.</p>
+      <div class="btn-row">
+        <a class="btn btn-ghost" href="#what">Not ready to sign up yet? See what we do again ↑</a>
+      </div>
+
+      <div class="signup-card reveal">
+        <form id="signup-form" onsubmit="sendSignup(event)">
+          <div class="field-row">
+            <label for="su-name">Name</label>
+            <input type="text" id="su-name" required placeholder="Your name">
+          </div>
+          <div class="field-row">
+            <label for="su-grade">Grade</label>
+            <select id="su-grade">
+              <option>9th</option>
+              <option selected>10th</option>
+              <option>11th</option>
+              <option>12th</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="su-email">Email</label>
+            <input type="email" id="su-email" required placeholder="you@email.com">
+          </div>
+          <div class="field-row checkbox-row">
+            <input type="checkbox" id="su-fma">
+            <label for="su-fma">I'm curious about the F=ma track too</label>
+          </div>
+          <div class="field-row">
+            <label for="su-note">Anything pulling you in? (optional)</label>
+            <textarea id="su-note" placeholder="totally optional"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">Send my sign-up</button>
+        </form>
+        <div class="signup-note">This opens Gmail in a new tab with everything filled in — just hit send. Nothing is submitted until you do.</div>
+      </div>
+
+      <div class="fine">Zero commitment to show up every time. Just come when you can.</div>
+    </div>
+  </section>
+
+  <script>
+    const PHYSICS_CLUB_EMAIL = "arjunmadaan29@gmail.com"; // swap for a club email if you make one
+
+    function sendSignup(e){
+      e.preventDefault();
+      const name = document.getElementById('su-name').value.trim();
+      const grade = document.getElementById('su-grade').value;
+      const email = document.getElementById('su-email').value.trim();
+      const fma = document.getElementById('su-fma').checked ? "Yes, I'm curious" : "Not sure yet";
+      const note = document.getElementById('su-note').value.trim();
+
+      const subject = encodeURIComponent(`Physics Club Sign-Up: ${name}`);
+      const body = encodeURIComponent(
+        `Name: ${name}\nGrade: ${grade}\nEmail: ${email}\nInterested in F=ma track: ${fma}\nWhat pulled them in: ${note || "—"}`
+      );
+
+      const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(PHYSICS_CLUB_EMAIL)}&su=${subject}&body=${body}`;
+      window.open(gmailComposeUrl, '_blank');
+    }
+
+    // ---------- Scroll reveal ----------
+    (function(){
+      const targets = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window) || targets.length === 0) {
+        targets.forEach(t => t.classList.add('in-view'));
+        return;
+      }
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      targets.forEach(t => observer.observe(t));
+    })();
+
+    // ---------- Hero diagram: 3D rubber-sheet gravity wells (Three.js) ----------
+    // Two fixed wells sit in a warped grid. Their depth breathes on its own, and
+    // moving your cursor near one adds mass and visibly sinks it deeper. Colored
+    // arrows show the local gradient (the "force field") and update every frame
+    // since the surface itself is constantly changing shape.
+    (function(){
+      const canvas = document.getElementById('orbit-canvas');
+      const heroVisual = document.getElementById('hero-visual');
+      const heroEl = document.querySelector('.hero');
+      if (!canvas) return;
+      if (typeof THREE === 'undefined') {
+        console.error('[physics club hero] Three.js failed to load from the CDN — check your network/ad-blocker, or view page source and confirm the <script src> tag for three.js loaded (Network tab in dev tools).');
+        return;
+      }
+      const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ---- Pure math: well depth + gradient, independent of Three.js ----
+      const SOFTEN = 1.2;
+      function wellDepth(x, z, wells){
+        let d = 0;
+        for (const w of wells) {
+          const dx = x - w.x, dz = z - w.z;
+          const dist = Math.sqrt(dx * dx + dz * dz);
+          d += -w.mass / (dist + SOFTEN);
+        }
+        return d;
+      }
+      function gradientAt(x, z, wells, eps){
+        eps = eps || 0.08;
+        const d0 = wellDepth(x, z, wells);
+        return {
+          dx: (wellDepth(x + eps, z, wells) - d0) / eps,
+          dz: (wellDepth(x, z + eps, wells) - d0) / eps,
+        };
+      }
+
+      const wells = [
+        { x: 3.4, z: -2.4, baseMass: 8, mass: 8, phase: 0.0 },
+      ];
+      const cursorWell = { x: 0, z: 0, mass: 0, targetMass: 0 };
+
+      // ---- Renderer / scene / camera ----
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+      const baseCam = { x: 3.6, y: 10.2, z: 9.5 };
+      camera.position.set(baseCam.x, baseCam.y, baseCam.z);
+      camera.lookAt(0, -1.4, 0);
+
+      // ---- Grid mesh ----
+      const SIZE = 15, SEGMENTS = 46;
+      const geometry = new THREE.PlaneGeometry(SIZE, SIZE, SEGMENTS, SEGMENTS);
+      geometry.rotateX(-Math.PI / 2); // lie flat: vertex.x/.z become world X/Z, vertex.y becomes depth
+      const posAttr = geometry.attributes.position;
+      const vertexCount = posAttr.count;
+      const colorArray = new Float32Array(vertexCount * 3);
+      geometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+
+      const gridMaterial = new THREE.MeshBasicMaterial({
+        wireframe: true,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.85,
+      });
+      const gridMesh = new THREE.Mesh(geometry, gridMaterial);
+      scene.add(gridMesh);
+
+      // A solid, filled surface sharing the same geometry — this is what actually
+      // makes the 3D shape and coloring read clearly; wireframe alone can look flat.
+      const surfaceMaterial = new THREE.MeshBasicMaterial({
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.5,
+        side: THREE.DoubleSide,
+      });
+      const surfaceMesh = new THREE.Mesh(geometry, surfaceMaterial);
+      scene.add(surfaceMesh);
+
+      console.log('[physics club hero] Three.js scene created:', THREE.REVISION);
+
+      // Small glowing cores sitting at the bottom of each fixed well.
+      const coreColors = [0xF4A261, 0x2C86A8];
+      const cores = wells.map((w, i) => {
+        const geo = new THREE.SphereGeometry(0.22, 16, 16);
+        const mat = new THREE.MeshBasicMaterial({ color: coreColors[i % coreColors.length] });
+        const mesh = new THREE.Mesh(geo, mat);
+        scene.add(mesh);
+        return mesh;
+      });
+
+      // ---- Colored gradient-vector arrows on a coarse sample grid ----
+      const ARROW_SAMPLES = 7;
+      const arrows = [];
+      for (let i = 0; i < ARROW_SAMPLES; i++) {
+        for (let j = 0; j < ARROW_SAMPLES; j++) {
+          const dir = new THREE.Vector3(0, 1, 0);
+          const arrow = new THREE.ArrowHelper(dir, new THREE.Vector3(0, 0, 0), 0.1, 0xffffff, 0.18, 0.09);
+          scene.add(arrow);
+          arrows.push(arrow);
+        }
+      }
+      function magnitudeColor(mag, maxMag){
+        const t = Math.max(0, Math.min(1, mag / maxMag));
+        // blue (weak) -> teal -> amber -> red (strong)
+        const hue = (1 - t) * 0.58; // 0.58 (blue-teal) down to 0 (red) in [0,1] hue space
+        const c = new THREE.Color();
+        c.setHSL(hue, 0.75, 0.55);
+        return c;
+      }
+
+      function updateSceneGeometry(){
+        for (let i = 0; i < vertexCount; i++) {
+          const x = posAttr.getX(i), z = posAttr.getZ(i);
+          const d = wellDepth(x, z, [...wells, cursorWell]);
+          posAttr.setY(i, d);
+          const depthT = Math.max(0, Math.min(1, -d / 4.5));
+          const col = magnitudeColor(depthT, 1);
+          colorArray[i * 3] = col.r;
+          colorArray[i * 3 + 1] = col.g;
+          colorArray[i * 3 + 2] = col.b;
+        }
+        posAttr.needsUpdate = true;
+        geometry.attributes.color.needsUpdate = true;
+
+        wells.forEach((w, i) => {
+          cores[i].position.set(w.x, wellDepth(w.x, w.z, [...wells, cursorWell]), w.z);
+        });
+
+        let idx = 0;
+        let maxMag = 0.01;
+        const samplePts = [];
+        for (let i = 0; i < ARROW_SAMPLES; i++) {
+          for (let j = 0; j < ARROW_SAMPLES; j++) {
+            const x = (i / (ARROW_SAMPLES - 1) - 0.5) * (SIZE * 0.82);
+            const z = (j / (ARROW_SAMPLES - 1) - 0.5) * (SIZE * 0.82);
+            const g = gradientAt(x, z, [...wells, cursorWell]);
+            const mag = Math.hypot(g.dx, g.dz);
+            samplePts.push({ x, z, g, mag });
+            if (mag > maxMag) maxMag = mag;
+          }
+        }
+        samplePts.forEach(pt => {
+          const arrow = arrows[idx++];
+          const y = wellDepth(pt.x, pt.z, [...wells, cursorWell]) + 0.06;
+          arrow.position.set(pt.x, y, pt.z);
+          const dir = new THREE.Vector3(-pt.g.dx, 0, -pt.g.dz);
+          if (dir.lengthSq() > 0.0001) arrow.setDirection(dir.normalize());
+          const len = 0.25 + Math.min(1, pt.mag / maxMag) * 1.1;
+          arrow.setLength(len, len * 0.32, len * 0.16);
+          arrow.setColor(magnitudeColor(pt.mag, maxMag));
+        });
+      }
+
+      // ---- Sizing ----
+      function resize(){
+        const rect = canvas.getBoundingClientRect();
+        const w = Math.max(rect.width, 1), h = Math.max(rect.height, 1);
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+
+      // ---- Cursor -> point on the y=0 plane, via raycasting ----
+      const raycaster = new THREE.Raycaster();
+      const groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+      const hitPoint = new THREE.Vector3();
+      const mouseNDC = new THREE.Vector2(0, 0);
+      let pointerActive = false;
+
+      function updatePointer(e){
+        const rect = canvas.getBoundingClientRect();
+        mouseNDC.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        mouseNDC.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        pointerActive = true;
+      }
+      function clearPointer(){ pointerActive = false; }
+
+      let clock = new THREE.Clock();
+      let lastLog = 0;
+      function tick(){
+        const t = clock.getElapsedTime();
+
+        wells.forEach(w => {
+          // Wells breathe on their own — deliberately large swing so it's unmistakable.
+          w.mass = w.baseMass * (1 + 0.55 * Math.sin(t * 0.9 + w.phase));
+        });
+
+        if (pointerActive) {
+          raycaster.setFromCamera(mouseNDC, camera);
+          if (raycaster.ray.intersectPlane(groundPlane, hitPoint)) {
+            cursorWell.x = hitPoint.x;
+            cursorWell.z = hitPoint.z;
+            cursorWell.targetMass = 5;
+            // Cursor mass also boosts whichever fixed well it's nearest to — "the well
+            // drops down due to the mass of something" nearby.
+            wells.forEach(w => {
+              const dist = Math.hypot(w.x - hitPoint.x, w.z - hitPoint.z);
+              const boost = 4 * Math.max(0, 1 - dist / 4.5);
+              w.mass += boost;
+            });
+          }
+        } else {
+          cursorWell.targetMass = 0;
+        }
+        cursorWell.mass += (cursorWell.targetMass - cursorWell.mass) * 0.08;
+
+        updateSceneGeometry();
+
+        if (t - lastLog > 1.5) {
+          lastLog = t;
+          console.log('[physics club hero] well depths:', wells.map(w => wellDepth(w.x, w.z, [...wells, cursorWell]).toFixed(2)));
+        }
+
+        // Mouse gives a subtle 3D tilt/parallax to the camera.
+        const targetX = baseCam.x + mouseNDC.x * 2.4;
+        const targetY = baseCam.y - mouseNDC.y * 1.3;
+        camera.position.x += (targetX - camera.position.x) * 0.05;
+        camera.position.y += (targetY - camera.position.y) * 0.05;
+        camera.lookAt(0, -1.4, 0);
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(tick);
+      }
+
+      resize();
+      updateSceneGeometry();
+
+      if (reduceMotion) {
+        camera.lookAt(0, -1.4, 0);
+        renderer.render(scene, camera); // one static frame, no motion, no cursor tracking
+      } else {
+        requestAnimationFrame(tick);
+        heroEl.addEventListener('pointermove', updatePointer);
+        heroEl.addEventListener('pointerleave', clearPointer);
+      }
+
+      window.addEventListener('resize', resize);
+      window.addEventListener('load', resize);
+
+      // ---------- Scroll also pulls the camera back / up slightly, tied to the hero's own position ----------
+      if (!reduceMotion) {
+        let ticking = false;
+        function applyScrollTilt(){
+          const rect = heroEl.getBoundingClientRect();
+          const scrolledInto = Math.max(0, Math.min(1, -rect.top / Math.max(rect.height, 1)));
+          baseCam.y = 8.4 + scrolledInto * 3.2;
+          baseCam.z = 10.5 + scrolledInto * 2.0;
+        }
+        window.addEventListener('scroll', () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => { applyScrollTilt(); ticking = false; });
+        });
+        applyScrollTilt();
+      }
+    })();
+  </script>
+
+  <footer>
+    Godwin Physics Club · Questions? Find [Arjun / club email / GroupMe] anytime.
+  </footer>
+
+</body>
+</html>
