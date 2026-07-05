@@ -417,59 +417,14 @@
       </div>
 
       <div class="signup-card reveal">
-        <form id="signup-form" onsubmit="sendSignup(event)">
-          <div class="field-row">
-            <label for="su-name">Name</label>
-            <input type="text" id="su-name" required placeholder="Your name">
-          </div>
-          <div class="field-row">
-            <label for="su-grade">Grade</label>
-            <select id="su-grade">
-              <option>9th</option>
-              <option selected>10th</option>
-              <option>11th</option>
-              <option>12th</option>
-            </select>
-          </div>
-          <div class="field-row">
-            <label for="su-email">Email</label>
-            <input type="email" id="su-email" required placeholder="you@email.com">
-          </div>
-          <div class="field-row checkbox-row">
-            <input type="checkbox" id="su-fma">
-            <label for="su-fma">I'm curious about the F=ma track too</label>
-          </div>
-          <div class="field-row">
-            <label for="su-note">Anything pulling you in? (optional)</label>
-            <textarea id="su-note" placeholder="totally optional"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary" style="width:100%;">Send my sign-up</button>
-        </form>
-        <div class="signup-note">This opens Gmail in a new tab with everything filled in — just hit send. Nothing is submitted until you do.</div>
+        <div class="date-card-label">Charter member sign-up</div>
+        <p style="color:var(--slate); font-size:14.5px; margin:8px 0 22px;">Takes under a minute — opens in a new tab.</p>
+        <a class="btn btn-primary" style="width:100%; text-align:center; display:block;" href="https://forms.gle/3Jrv2ueYzddedEzr8" target="_blank" rel="noopener">Sign up via Google Form</a>
       </div>
     </div>
   </section>
 
   <script>
-    const PHYSICS_CLUB_EMAIL = "arjunmadaan29@gmail.com"; // swap for a club email if you make one
-
-    function sendSignup(e){
-      e.preventDefault();
-      const name = document.getElementById('su-name').value.trim();
-      const grade = document.getElementById('su-grade').value;
-      const email = document.getElementById('su-email').value.trim();
-      const fma = document.getElementById('su-fma').checked ? "Yes, I'm curious" : "Not sure yet";
-      const note = document.getElementById('su-note').value.trim();
-
-      const subject = encodeURIComponent(`Physics Club Sign-Up: ${name}`);
-      const body = encodeURIComponent(
-        `Name: ${name}\nGrade: ${grade}\nEmail: ${email}\nInterested in F=ma track: ${fma}\nWhat pulled them in: ${note || "—"}`
-      );
-
-      const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(PHYSICS_CLUB_EMAIL)}&su=${subject}&body=${body}`;
-      window.open(gmailComposeUrl, '_blank');
-    }
-
     // ---------- Scroll reveal ----------
     (function(){
       const targets = document.querySelectorAll('.reveal');
@@ -748,7 +703,7 @@
   </script>
 
   <footer>
-    Godwin Physics Club · Questions? Find Arjun anytime.
+    Godwin Physics Club · Questions? Find [Arjun / club email / GroupMe] anytime.
   </footer>
 
 </body>
